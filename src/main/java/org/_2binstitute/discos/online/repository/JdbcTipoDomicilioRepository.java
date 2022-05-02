@@ -4,11 +4,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.sql.DataSource;
 import org._2binstitute.discos.online.domain.TipoDomicilio;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class JdbcTipoDomicilioRepository implements TipoDomicilioRepository {
 
 	private DataSource dataSource;
 	
+	@Autowired
 	public JdbcTipoDomicilioRepository(DataSource dataSource) {
 		this.dataSource = dataSource; 
 	}

@@ -8,30 +8,24 @@ import org._2binstitute.discos.online.repository.DomicilioRepository;
 import org._2binstitute.discos.online.repository.PerfilRepository;
 import org._2binstitute.discos.online.repository.RolRepository;
 import org._2binstitute.discos.online.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UsuarioServiceImpl implements UsuarioService{
-	private UsuarioRepository usuarioRepository; 
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
 	private RolRepository rolRepository;
+	
+	@Autowired
 	private DomicilioRepository domicilioRepository;
+	
+	@Autowired
 	private PerfilRepository perfilRepository;
 
 	public UsuarioServiceImpl() {}	
-	
-	public void setUsuarioRepository(UsuarioRepository usuarioRepository) {
-		this.usuarioRepository = usuarioRepository;
-	}
-
-	public void setRolRepository(RolRepository rolRepository) {
-		this.rolRepository = rolRepository;
-	}
-
-	public void setDomicilioRepository(DomicilioRepository domicilioRepository) {
-		this.domicilioRepository = domicilioRepository;
-	}
-
-	public void setPerfilRepository(PerfilRepository perfilRepository) {
-		this.perfilRepository = perfilRepository;
-	}
 
 	@Override
 	public Usuario registrarUsuario(Usuario usuario, Domicilio domicilio) {

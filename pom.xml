@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.2binstitute</groupId>
-  <artifactId>disc-online-app-module2-spring</artifactId>
+  <artifactId>disc-online-app-module3-spring</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <properties>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -50,7 +50,9 @@
   		<groupId>org.springframework</groupId>
   		<artifactId>spring-expression</artifactId>
   		<version>${spring.version}</version>
-  	</dependency>  	
+  	</dependency>
+  	
+  	<!-- Lombok -->
   	
   	<!-- Test -->
   	<dependency>

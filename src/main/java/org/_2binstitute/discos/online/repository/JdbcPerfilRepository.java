@@ -3,10 +3,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import javax.sql.DataSource;
 import org._2binstitute.discos.online.domain.Perfil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class JdbcPerfilRepository implements PerfilRepository {
 	private DataSource dataSource;
 	
+	@Autowired
 	public JdbcPerfilRepository(DataSource dataSource) {
 		this.dataSource = dataSource; 
 	}

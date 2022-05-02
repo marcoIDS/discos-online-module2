@@ -5,10 +5,14 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.sql.DataSource;
 import org._2binstitute.discos.online.domain.Usuario;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class JdbcUsuarioRepository implements UsuarioRepository {	
 	private DataSource dataSource;
 	
+	@Autowired
 	public JdbcUsuarioRepository(DataSource dataSource) {
 		this.dataSource = dataSource; 
 	}

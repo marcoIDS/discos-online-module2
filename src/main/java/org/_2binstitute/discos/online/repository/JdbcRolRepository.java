@@ -6,10 +6,14 @@ import java.sql.ResultSet;
 
 import javax.sql.DataSource;
 import org._2binstitute.discos.online.domain.Rol;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class JdbcRolRepository implements RolRepository{
 	private DataSource dataSource;
 	
+	@Autowired
 	public JdbcRolRepository(DataSource dataSource) {
 		this.dataSource = dataSource; 
 	}

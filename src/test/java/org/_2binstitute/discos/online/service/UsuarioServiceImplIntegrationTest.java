@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.List;
 import java.util.UUID;
 
+import org._2binstitute.discos.online.AppConfig;
 import org._2binstitute.discos.online.domain.Colonia;
 import org._2binstitute.discos.online.domain.Domicilio;
 import org._2binstitute.discos.online.domain.TipoDomicilio;
@@ -21,7 +22,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration("classpath:applicationContext.xml")
+@ContextConfiguration(classes = {AppConfig.class})
 public class UsuarioServiceImplIntegrationTest {
 	@Autowired
 	private UsuarioService usuarioService;
