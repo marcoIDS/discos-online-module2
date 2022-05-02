@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+	<!-- Service Section -->
+	<bean id="usuarioService" class="org._2binstitute.discos.online.service.UsuarioServiceImpl">
+		<property name="usuarioRepository" ref="usuarioRepository"/>
+		<property name="domicilioRepository" ref="domicilioRepository"/>
+		<property name="perfilRepository" ref="perfilRepository"/>
+		<property name="rolRepository" ref="rolRepository"/>
+	</bean>
+	
+	<!-- Repositories Section -->
+	<bean id="usuarioRepository" class="org._2binstitute.discos.online.repository.JdbcUsuarioRepository">
+		<constructor-arg ref="dataSource"/>
+	</bean>
+	<bean id="domicilioRepository" class="org._2binstitute.discos.online.repository.JdbcDomicilioRepository">
+		<constructor-arg ref="dataSource"/>
+	</bean>
+	<bean id="perfilRepository" class="org._2binstitute.discos.online.repository.JdbcPerfilRepository">
+		<constructor-arg ref="dataSource"/>
+	</bean>
+	<bean id="rolRepository" class="org._2binstitute.discos.online.repository.JdbcRolRepository">
+		<constructor-arg ref="dataSource"/>
+	</bean>
+	<bean id="coloniaRepository" class="org._2binstitute.discos.online.repository.JdbcColoniaRepository">
+		<constructor-arg ref="dataSource"/>
+	</bean>
+	<bean id="tipoDomicilioRepository" class="org._2binstitute.discos.online.repository.JdbcTipoDomicilioRepository">
+		<constructor-arg ref="dataSource"/>
+	</bean>
+	
+	<!-- DataSource Section -->
+	<!-- <bean id="dataSource" class="org._2binstitute.discos.online.repository.MySQLDataSource"/> -->
+	<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+		<property name="location">
+			<value>classpath:jdbc.properties</value>
+		</property>
+	</bean>
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+	</bean>
+</beans>  
