@@ -1,87 +1,47 @@
 package org._2binstitute.discos.online.repository;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org._2binstitute.discos.online.domain.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class JdbcUsuarioRepository implements UsuarioRepository {	
-	private DataSource dataSource;
+	private JdbcTemplate jdbcTemplate;
+	private SimpleJdbcInsert jdbcInsert;
 	
 	@Autowired
-	public JdbcUsuarioRepository(DataSource dataSource) {
-		this.dataSource = dataSource; 
+	public JdbcUsuarioRepository(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+		this.jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("usuario").usingGeneratedKeyColumns("id"); 
 	}
 		
 	@Override
 	public Usuario insertar(Usuario usuario) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			conn = dataSource.getConnection();
-			String sql = "INSERT INTO usuario(nombre, primer_apellido, segundo_apellido, "
-					+ "password, email, rfc) VALUES (?, ?, ?, ?, ?, ?) ";
-			
-			pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			pstmt.setString(1, usuario.getNombre());
-			pstmt.setString(2, usuario.getPrimerApellido());
-			pstmt.setString(3, usuario.getSegundoApellido());
-			pstmt.setString(4, usuario.getPassword());
-			pstmt.setString(5, usuario.getEmail());
-			pstmt.setString(6, usuario.getRfc());
-			
-			pstmt.executeUpdate();	
-			rs = pstmt.getGeneratedKeys();
-			
-			if (rs.next()) {
-				usuario.setId(rs.getInt(1));
-			}
-			
-			return usuario;
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {if (rs != null) {rs.close();}} catch (Exception e) {}
-			try {if (pstmt != null) {pstmt.close();}} catch (Exception e) {}
-			try {if (conn != null) {conn.close();}} catch (Exception e) {}
-		}		
-		return null;
+		Map<String, Object> values = new HashMap<>();
+		values.put("nombre", usuario.getNombre());
+		values.put("primer_apellido", usuario.getPrimerApellido());
+		values.put("segundo_apellido", usuario.getSegundoApellido());
+		values.put("password", usuario.getPassword());
+		values.put("email", usuario.getEmail());
+		values.put("rfc", usuario.getRfc());
+		
+		Integer idUsuario = jdbcInsert.executeAndReturnKey(values).intValue();		
+		usuario.setId(idUsuario);
+		
+		return usuario;
 	}
 
 	@Override
 	public Usuario buscarPorEmail(String email) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		Usuario usuario = null;
-		try {
-			conn = dataSource.getConnection();
-			String sql = "SELECT id, email FROM usuario WHERE email  = ? ";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, email);
-			rs = pstmt.executeQuery();
-			
-			if (rs.next()) {
-				usuario = new Usuario();
-				usuario.setId(rs.getInt("id"));
-				usuario.setEmail(rs.getString("email"));
-			}
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {if (rs != null) {rs.close();}} catch (Exception e) {}
-			try {if (pstmt != null) {pstmt.close();}} catch (Exception e) {}
-			try {if (conn != null) {conn.close();}} catch (Exception e) {}
-		}
-		
-		return usuario;
+		String sql = "SELECT id, email FROM usuario WHERE email  = ?";
+		List<Usuario> usuarios = jdbcTemplate.query(sql, new BeanPropertyRowMapper<Usuario>(Usuario.class), email);
+		return !usuarios.isEmpty() ? usuarios.get(0) : null;
 	}
 
 }
